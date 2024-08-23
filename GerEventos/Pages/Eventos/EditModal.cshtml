@@ -1,0 +1,46 @@
+﻿@page
+@using GerEventos.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@model GerEventos.Pages.Eventos.EditModalModel
+@inject IStringLocalizer<GerEventosResource> L
+@{
+    Layout = null;
+}
+
+<abp-modal>
+    <abp-modal-header title="@L["Editar evento"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <form method="post" action="/Evento/EditModal">
+            <abp-input asp-for="@Model.Evento.Nome" />
+
+            <abp-row>
+                <div class="col-6 mb-3">
+                    <abp-select asp-for="Evento.TipoEventoId" asp-items="@Model.TipoEventos" required />
+                </div>
+                <div class="col-6 mb-3">
+                    <abp-select asp-for="Evento.BalcaoVendasId" asp-items="@Model.BalcaoVendas" required />
+                </div>
+            </abp-row>
+
+            <abp-row>
+                <div class="col-4 mb-3">
+                    <abp-date-picker asp-for="@Model.Evento.DataInicio" />
+                </div>
+
+                <div class="col-4 mb-3">
+                    <abp-date-picker asp-for="@Model.Evento.DataFim" />
+                </div>
+
+                <div class="col-4 mb-3">
+                    <abp-input asp-for="@Model.Evento.Valor" />
+                </div>
+            </abp-row>
+
+            <abp-input asp-for="@Model.Evento.Produtor" />
+            <abp-input asp-for="@Model.Evento.Endereco" />
+            <abp-input asp-for="@Model.Evento.Site" />
+            <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+        </form>
+    </abp-modal-body>
+</abp-modal>

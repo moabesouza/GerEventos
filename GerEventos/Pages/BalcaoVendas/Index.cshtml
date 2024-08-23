@@ -1,0 +1,35 @@
+﻿@page
+@using GerEventos.Localization
+@using GerEventos.Permissions
+@using GerEventos.Pages.BalcaoVendas
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@model IndexModel
+@inject IStringLocalizer<GerEventosResource> L
+@inject IAuthorizationService AuthorizationService
+@section scripts
+{
+    <abp-script src="/Pages/BalcaoVendas/Index.js" />
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Balcão de vendas"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+                @if (await AuthorizationService.IsGrantedAsync(GerEventosPermissions.BalcaoVendas.Create))
+                {
+                    <abp-button id="NewBalcaoVendasButton"
+                                text="@L["Novo balcão"].Value"
+                                icon="plus"
+                                button-type="Primary" />
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="BalcaoVendasTable"></abp-table>
+    </abp-card-body>
+</abp-card>

@@ -1,0 +1,9 @@
+﻿{
+  "applications": {
+    "GerEventos": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44353",
+      "path": "../../GerEventos/GerEventos.csproj"
+    }
+  }
+}

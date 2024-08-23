@@ -1,0 +1,36 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using GerEventos.Localization
+@using Volo.Abp.Users
+@inject IHtmlLocalizer<GerEventosResource> L
+@model GerEventos.Pages.IndexModel
+@inject ICurrentUser CurrentUser
+@section styles {
+    <abp-style src="/Pages/Index.cshtml.css" />
+}
+@section scripts {
+    <abp-script src="/Pages/Index.cshtml.js" />
+    <script src="~/libs/chart-js/chart.js" /></script>
+}
+
+<div class="container">
+    <abp-card>
+        <abp-card-header>
+            <abp-card-title>
+                @L["Welcome_Title"]
+            </abp-card-title>
+        </abp-card-header>
+        <abp-card-body>
+            @L["Welcome_Text"]
+            @if (!CurrentUser.IsAuthenticated)
+            {
+                <div class="mt-3">
+                    <a abp-button="Primary" href="~/Account/Login">@L["Login"]</a>
+                </div>
+            }
+            <!-- Canvas for Chart.js -->
+            <canvas id="myChart" width="400" height="200"></canvas>
+        </abp-card-body>
+    </abp-card>
+</div>
+

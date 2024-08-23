@@ -1,0 +1,37 @@
+{
+  "id": "b5981c27-843d-4a46-a421-ec0834fdb50d",
+  "template": "app-nolayers",
+  "versions": {
+    "AbpFramework": "8.2.1",
+    "AbpCommercial": "8.2.1",
+    "AbpStudio": "0.7.7"
+  },
+  "modules": {
+    "GerEventos": {
+      "path": "GerEventos.abpmdl"
+    }
+  },
+  "runProfiles": {
+    "Default": {
+      "path": "etc/run-profiles/Default.abprun.json"
+    }
+  },
+  "options": {
+    "httpRequests": {
+      "ignoredUrls": [
+        "^/metrics$"
+      ]
+    }
+  },
+  "creatingStudioConfiguration": {
+    "template": "app-nolayers",
+    "createdAbpStudioVersion": "0.7.7",
+    "uiFramework": "mvc",
+    "databaseProvider": "ef",
+    "databaseManagementSystem": "sqlserver",
+    "theme": "leptonx-lite",
+    "themeStyle": "",
+    "publicWebsite": "",
+    "socialLogin": ""
+  }
+}

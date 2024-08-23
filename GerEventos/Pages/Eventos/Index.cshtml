@@ -1,0 +1,35 @@
+﻿@page
+@using GerEventos.Localization
+@using GerEventos.Permissions
+@using GerEventos.Pages.Eventos
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@model IndexModel
+@inject IStringLocalizer<GerEventosResource> L
+@inject IAuthorizationService AuthorizationService
+@section scripts
+{
+    <abp-script src="/Pages/Eventos/Index.js" />
+}
+<meta charset="UTF-8">
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Eventos"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+                @if (await AuthorizationService.IsGrantedAsync(GerEventosPermissions.Evento.Create))
+                {
+                    <abp-button id="NewEventoButton"
+                                text="@L["Novo Evento"].Value"
+                                icon="plus"
+                                button-type="Primary" />
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="EventosTable"></abp-table>
+    </abp-card-body>
+</abp-card>

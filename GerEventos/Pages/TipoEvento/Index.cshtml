@@ -1,0 +1,34 @@
+﻿@page
+@using GerEventos.Localization
+@using GerEventos.Permissions
+@using GerEventos.Pages.TipoEventos
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@model IndexModel
+@inject IStringLocalizer<GerEventosResource> L
+@inject IAuthorizationService AuthorizationService
+@section scripts
+{
+    <abp-script src="/Pages/TipoEvento/Index.js" />
+}
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Tipo de evento"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+                @if (await AuthorizationService.IsGrantedAsync(GerEventosPermissions.TipoEvento.Create))
+                {
+                    <abp-button id="NewTipoEventoButton"
+                                text="@L["Novo tipo de evento"].Value"
+                                icon="plus"
+                                button-type="Primary" />
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="TipoEventoTable"></abp-table>
+    </abp-card-body>
+</abp-card>
