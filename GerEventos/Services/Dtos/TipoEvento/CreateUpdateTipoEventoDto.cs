@@ -1,6 +1,4 @@
-﻿using GerEventos.Entities;
-using GerEventos.Services.Dtos.Eventos;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace GerEventos.Services.Dtos.TipoEventos
 {
