@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Volo.Abp.AspNetCore.Mvc.UI.RazorPages;
 using Volo.Abp.Application.Dtos;
+using GerEventos.Entities;
 
 namespace GerEventos.Pages.Eventos
 {
@@ -41,18 +42,27 @@ namespace GerEventos.Pages.Eventos
             var tipoEventosResult = await _tipoEventoAppService.GetListAsync(requestDto);
             var balcaoVendasResult = await _balcaoVendasAppService.GetListAsync(requestDto);
 
-            TipoEventos = tipoEventosResult.Items.Select(t => new SelectListItem
-            {
-                Value = t.Id.ToString(),
-                Text = t.Nome
-            }).ToList();
+          
+            TipoEventos = tipoEventosResult.Items
+                .Where(t => t.Status == StatusEnum.Ativado) 
+                .Select(t => new SelectListItem
+                {
+                    Value = t.Id.ToString(),
+                    Text = t.Nome
+                })
+                .ToList();
 
-            BalcaoVendas = balcaoVendasResult.Items.Select(b => new SelectListItem
-            {
-                Value = b.Id.ToString(),
-                Text = b.Nome
-            }).ToList();
+        
+            BalcaoVendas = balcaoVendasResult.Items
+                .Where(b => b.Status == StatusEnum.Ativado) 
+                .Select(b => new SelectListItem
+                {
+                    Value = b.Id.ToString(),
+                    Text = b.Nome
+                })
+                .ToList();
         }
+
 
         public async Task<IActionResult> OnPostAsync()
         {
