@@ -14,7 +14,8 @@ namespace GerEventos.Services.BalcaoVendas
             PagedAndSortedResultRequestDto, // Used for paging/sorting
             CreateUpdateBalcaoVendasDto> // Used to create/update a sales counter
     {
-
+        Task DeactivateAsync(Guid id);
+        Task ActivateAsync(Guid id);
 
     }
 }

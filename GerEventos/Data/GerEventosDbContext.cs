@@ -59,6 +59,7 @@ public class GerEventosDbContext : AbpDbContext<GerEventosDbContext>
             b.ToTable(DbTablePrefix + "BalcaoVendas", DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Nome).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Status).IsRequired();
             b.Property(x => x.Localizacao).IsRequired().HasMaxLength(256);
         });
 
@@ -67,6 +68,7 @@ public class GerEventosDbContext : AbpDbContext<GerEventosDbContext>
         {
             b.ToTable(DbTablePrefix + "Eventos", DbSchema);
             b.ConfigureByConvention();
+            b.Property(e => e.Valor).HasColumnType("decimal(18,2)");
             b.Property(x => x.Nome).IsRequired().HasMaxLength(128);
             b.Property(x => x.Produtor).HasMaxLength(128);
             b.Property(x => x.Endereco).HasMaxLength(256);

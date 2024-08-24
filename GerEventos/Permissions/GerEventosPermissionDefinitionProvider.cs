@@ -29,9 +29,8 @@ public class GerEventosPermissionDefinitionProvider : PermissionDefinitionProvid
         var balcaoVendasPermission = myGroup.AddPermission(GerEventosPermissions.BalcaoVendas.Default, L("Permission:BalcaoVendas"));
         balcaoVendasPermission.AddChild(GerEventosPermissions.BalcaoVendas.Create, L("Permission:BalcaoVendas.Create"));
         balcaoVendasPermission.AddChild(GerEventosPermissions.BalcaoVendas.Edit, L("Permission:BalcaoVendas.Edit"));
-        balcaoVendasPermission.AddChild(GerEventosPermissions.BalcaoVendas.Delete, L("Permission:BalcaoVendas.Delete"));
-        balcaoVendasPermission.AddChild(GerEventosPermissions.TipoEvento.Desativar, L("Permission:BalcaoVendas.Desativar"));
-        balcaoVendasPermission.AddChild(GerEventosPermissions.TipoEvento.Ativar, L("Permission:BalcaoVendas.Ativar"));
+        balcaoVendasPermission.AddChild(GerEventosPermissions.BalcaoVendas.Desativar, L("Permission:BalcaoVendas.Desativar"));
+        balcaoVendasPermission.AddChild(GerEventosPermissions.BalcaoVendas.Ativar, L("Permission:BalcaoVendas.Ativar"));
 
 
         // Define suas próprias permissões aqui, se necessário. Exemplo:

@@ -24,8 +24,21 @@ namespace GerEventos.Services.BalcaoVendas
             GetPolicyName = GerEventosPermissions.BalcaoVendas.Default;
             GetListPolicyName = GerEventosPermissions.BalcaoVendas.Default;
             CreatePolicyName = GerEventosPermissions.BalcaoVendas.Create;
-            UpdatePolicyName = GerEventosPermissions.BalcaoVendas.Edit;
-            DeletePolicyName = GerEventosPermissions.BalcaoVendas.Delete;
+            UpdatePolicyName = GerEventosPermissions.BalcaoVendas.Edit;     
+        }
+
+        public async Task DeactivateAsync(Guid id)
+        {
+            var balcaoVendas = await Repository.GetAsync(id);
+            balcaoVendas.Status = (int)StatusEnum.Desativado;
+            await Repository.UpdateAsync(balcaoVendas);
+        }
+
+        public async Task ActivateAsync(Guid id)
+        {
+            var balcaoVendas = await Repository.GetAsync(id);
+            balcaoVendas.Status = (int)StatusEnum.Ativado;
+            await Repository.UpdateAsync(balcaoVendas);
         }
 
     }
