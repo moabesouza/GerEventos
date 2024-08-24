@@ -11,8 +11,16 @@ public class GerEventosAutoMapperProfile : Profile
     {
 
         // Mapeamento para Evento
-        CreateMap<Evento, EventoDto>();
-        CreateMap<CreateUpdateEventoDto, Evento>();
+        CreateMap<Evento, EventoDto>()
+            .ForMember(dest => dest.NomeTipoEvento, opt => opt.MapFrom(src => src.TipoEvento.Nome))
+            .ForMember(dest => dest.NomeBalcaoVendas, opt => opt.MapFrom(src => src.BalcaoVendas.Nome))
+            .ForMember(dest => dest.DataInicio, opt => opt.MapFrom(src => src.DataInicio.ToString("dd/MM/yyyy")))
+            .ForMember(dest => dest.DataFim, opt => opt.MapFrom(src => src.DataFim.ToString("dd/MM/yyyy")));
+
+        CreateMap<CreateUpdateEventoDto, Evento>()
+            .ForMember(dest => dest.TipoEvento, opt => opt.Ignore())
+            .ForMember(dest => dest.BalcaoVendas, opt => opt.Ignore());
+
         CreateMap<EventoDto, CreateUpdateEventoDto>();
 
         // Mapeamento para TipoEvento

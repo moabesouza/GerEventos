@@ -16,6 +16,7 @@ namespace GerEventos.Services.BalcaoVendas
     {
         Task DeactivateAsync(Guid id);
         Task ActivateAsync(Guid id);
+        Task<bool> nomeJaExiste(string nome);
 
     }
 }

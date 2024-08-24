@@ -5,6 +5,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 public class Evento : AuditedAggregateRoot<Guid>
 {
+ 
     [Display(Name = "Nome")]
     public string? Nome { get; set; }
     public Guid TipoEventoId { get; set; }

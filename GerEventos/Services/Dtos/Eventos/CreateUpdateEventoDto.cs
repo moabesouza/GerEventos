@@ -10,6 +10,9 @@ namespace GerEventos.Services.Dtos.Eventos
 {
     public class CreateUpdateEventoDto
     {
+        [HiddenInput]
+        public Guid Id { get; set; }
+
         [Required]
         [StringLength(128)]
         [Display(Name = "Nome")]

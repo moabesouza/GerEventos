@@ -3,6 +3,8 @@ $(function () {
     var createModal = new abp.ModalManager(abp.appPath + 'Eventos/CreateModal');
     var editModal = new abp.ModalManager(abp.appPath + 'Eventos/EditModal');
 
+    // Exibir dados retornados pela API para depuração
+
     // Initialize DataTable
     var dataTable = $('#EventosTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
@@ -49,12 +51,12 @@ $(function () {
                 {
                     title: l('Data Início'),
                     data: "dataInicio",
-                    dataFormat: "datetime"
+                 
                 },
                 {
                     title: l('Data Fim'),
                     data: "dataFim",
-                    dataFormat: "datetime"
+                   
                 },
                 {
                     title: l('Produtor'),
@@ -62,7 +64,7 @@ $(function () {
                 },
                 {
                     title: l('Tipo de Evento'),
-                    data: "tipoEventoId"
+                    data: "nomeTipoEvento"
                 }
             ]
         })
@@ -76,6 +78,8 @@ $(function () {
     editModal.onResult(function () {
         dataTable.ajax.reload();
     });
+
+
 
     // Open create modal on button click
     $('#NewEventoButton').click(function (e) {

@@ -4,6 +4,7 @@ using Volo.Abp.Application.Services;
 using GerEventos.Services.Dtos.TipoEventos;
 using GerEventos.Entities;
 using GerEventos.Services.Dtos.TipoEvento;
+using System.Threading.Tasks;
 
 namespace GerEventos.Services.TipoEventos
 {
@@ -16,6 +17,7 @@ namespace GerEventos.Services.TipoEventos
     {
         Task DeactivateAsync(Guid id);
         Task ActivateAsync(Guid id);
+        Task<bool> nomeJaExiste(string nome);
 
     }
 }

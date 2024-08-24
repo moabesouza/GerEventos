@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using GerEventos.Permissions;
+using GerEventos.Entities;
+using GerEventos.Services.Dtos.TipoEventos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
-using GerEventos.Services.Dtos.TipoEventos;
-using GerEventos.Entities;
 using GerEventos.Services.Dtos.TipoEvento;
 
 namespace GerEventos.Services.TipoEventos
@@ -31,16 +33,19 @@ namespace GerEventos.Services.TipoEventos
         {
             var tipoEvento = await Repository.GetAsync(id);
             tipoEvento.Status = StatusEnum.Desativado;
-            await Repository.UpdateAsync(tipoEvento); 
+            await Repository.UpdateAsync(tipoEvento);
         }
 
         public async Task ActivateAsync(Guid id)
         {
-            var tipoEvento = await Repository.GetAsync(id); 
-            tipoEvento.Status = StatusEnum.Ativado; 
+            var tipoEvento = await Repository.GetAsync(id);
+            tipoEvento.Status = StatusEnum.Ativado;
             await Repository.UpdateAsync(tipoEvento);
         }
 
-
+        public async Task<bool> nomeJaExiste(string nome)
+        {
+            return await Repository.AnyAsync(te => te.Nome == nome);
+        }
     }
 }

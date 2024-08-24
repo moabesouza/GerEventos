@@ -41,5 +41,10 @@ namespace GerEventos.Services.BalcaoVendas
             await Repository.UpdateAsync(balcaoVendas);
         }
 
+        public async Task<bool> nomeJaExiste(string nome)
+        {
+            return await Repository.AnyAsync(te => te.Nome == nome);
+        }
+
     }
 }

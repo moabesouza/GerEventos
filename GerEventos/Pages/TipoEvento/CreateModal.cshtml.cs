@@ -3,7 +3,7 @@ using GerEventos.Services.TipoEventos;
 using GerEventos.Services.Dtos.TipoEventos;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.RazorPages;
-using GerEventos.Entities;
+
 
 namespace GerEventos.Pages.TipoEventos
 {
@@ -22,11 +22,24 @@ namespace GerEventos.Pages.TipoEventos
         public void OnGet()
         {
             TipoEvento = new CreateUpdateTipoEventoDto();
-
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+          
+            if (await _tipoEventoAppService.nomeJaExiste(TipoEvento.Nome))
+            {
+                ModelState.AddModelError("TipoEvento.Nome", "O nome do tipo de evento já existe.");
+                return Page(); 
+            }
+
+
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            // Cria o tipo de evento se não houver erros
             await _tipoEventoAppService.CreateAsync(TipoEvento);
             return NoContent();
         }

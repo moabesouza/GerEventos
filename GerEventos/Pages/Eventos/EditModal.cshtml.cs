@@ -38,7 +38,7 @@ namespace GerEventos.Pages.Eventos
             _balcaoVendasAppService = balcaoVendasAppService;
         }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(Guid id)
         {
             var tipoEventosResult = await _tipoEventoAppService.GetListAsync(new PagedAndSortedResultRequestDto());
             TipoEventos = tipoEventosResult.Items.Select(t => new SelectListItem
@@ -60,12 +60,13 @@ namespace GerEventos.Pages.Eventos
 
         public async Task<IActionResult> OnPostAsync()
         {
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            await _eventoAppService.UpdateAsync(Id, Evento);
+            await _eventoAppService.UpdateAsync(Evento.Id, Evento);
             return NoContent();
         }
     }
