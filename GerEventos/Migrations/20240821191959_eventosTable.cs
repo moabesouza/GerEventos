@@ -6,12 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GerEventos.Migrations
 {
     /// <inheritdoc />
-    public partial class gerEventos : Migration
+    public partial class eventosTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-          
             migrationBuilder.CreateTable(
                 name: "AppBalcaoVendas",
                 columns: table => new
@@ -19,7 +18,6 @@ namespace GerEventos.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Localizacao = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -38,7 +36,7 @@ namespace GerEventos.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -111,9 +109,6 @@ namespace GerEventos.Migrations
 
             migrationBuilder.DropTable(
                 name: "AppTipoEvento");
-
-      
-              
         }
     }
 }

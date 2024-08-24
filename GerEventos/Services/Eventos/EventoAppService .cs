@@ -26,7 +26,5 @@ namespace GerEventos.Services.Eventos
             UpdatePolicyName = GerEventosPermissions.Evento.Edit;
             DeletePolicyName = GerEventosPermissions.Evento.Delete;
         }
-
-
     }
 }

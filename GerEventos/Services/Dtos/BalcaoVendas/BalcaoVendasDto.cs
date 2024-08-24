@@ -7,6 +7,5 @@ namespace GerEventos.Services.Dtos.BalcaoVendas
     {
         public string Nome { get; set; }
         public string Localizacao { get; set; }
-        public StatusEnum Status { get; set; }
     }
 }

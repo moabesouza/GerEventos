@@ -24,48 +24,21 @@ $(function () {
                                     editModal.open({ id: data.record.id });
                                 }
                             },
-
                             {
-                                text: l('Desativar'),
-                                visible: abp.auth.isGranted('GerEventos.BalcaoVendas.Desativar'),
+                                text: l('Deletar'),
+                                visible: abp.auth.isGranted('GerEventos.BalcaoVendas.Delete'),
                                 confirmMessage: function (data) {
-                                    return l('Deseja realmente desativar?'); 
+                                    return l('BalcaoVendasDeletionConfirmationMessage', data.record.name);
                                 },
                                 action: function (data) {
                                     gerEventos.services.balcaoVendas.balcaoVendas
-                                        .deactivate(data.record.id)
+                                        .delete(data.record.id)
                                         .then(function () {
-                                            abp.notify.info(l('Desativado com sucesso!'));
+                                            abp.notify.info(l('SuccessfullyDeleted'));
                                             dataTable.ajax.reload();
-                                        })
-                                        .catch(function (error) {
-                                            abp.notify.error(l('Erro ao desativar!'));
-                                            console.error(error);
-                                        });
-                                }
-                            },
-
-
-                            {
-                                text: l('Ativar'),
-                                visible: abp.auth.isGranted('GerEventos.BalcaoVendas.Ativar'),
-                                confirmMessage: function (data) {
-                                    return l('Deseja realmente ativar?');
-                                },
-                                action: function (data) {
-                                    gerEventos.services.balcaoVendas.balcaoVendas
-                                        .activate(data.record.id)
-                                        .then(function () {
-                                            abp.notify.info(l('Ativado com sucesso!'));
-                                            dataTable.ajax.reload();
-                                        })
-                                        .catch(function (error) {
-                                            abp.notify.error(l('Erro ao ativar!'));
-                                            console.error(error);
                                         });
                                 }
                             }
-
                         ]
                     }
                 },
@@ -78,13 +51,6 @@ $(function () {
                     data: "localizacao"
                 },
 
-                {
-                    title: l('Status'),
-                    data: "status",
-                    render: function (data) {
-                        return data === 1 ? '<span class="badge rounded-pill bg-success">Ativado</span>' : '<span class="badge rounded-pill bg-info">Desativado</span>';
-                    }
-                }
             ]
         })
     );

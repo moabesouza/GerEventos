@@ -10,7 +10,6 @@ public class Evento : AuditedAggregateRoot<Guid>
     public Guid TipoEventoId { get; set; }
     public DateTime DataInicio { get; set; }
     public DateTime DataFim { get; set; }
-    [Column(TypeName = "decimal(18,2)")]
     public decimal Valor { get; set; }
     public Guid BalcaoVendasId { get; set; } 
     public string? Produtor { get; set; }

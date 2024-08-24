@@ -67,9 +67,6 @@ namespace GerEventos.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("AppBalcaoVendas", (string)null);
@@ -149,6 +146,7 @@ namespace GerEventos.Migrations
                     b.ToTable("AppEventos", (string)null);
                 });
 
+
             modelBuilder.Entity("GerEventos.Entities.TipoEvento", b =>
                 {
                     b.Property<Guid>("Id")
@@ -187,8 +185,9 @@ namespace GerEventos.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
