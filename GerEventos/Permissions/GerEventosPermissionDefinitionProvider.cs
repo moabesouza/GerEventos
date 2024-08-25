@@ -32,6 +32,13 @@ public class GerEventosPermissionDefinitionProvider : PermissionDefinitionProvid
         balcaoVendasPermission.AddChild(GerEventosPermissions.BalcaoVendas.Desativar, L("Permission:BalcaoVendas.Desativar"));
         balcaoVendasPermission.AddChild(GerEventosPermissions.BalcaoVendas.Ativar, L("Permission:BalcaoVendas.Ativar"));
 
+        // Permissões para Produtor
+        var produtorPermission = myGroup.AddPermission(GerEventosPermissions.Produtor.Default, L("Permission:Produtor"));
+        produtorPermission.AddChild(GerEventosPermissions.Produtor.Create, L("Permission:Produtor.Create"));
+        produtorPermission.AddChild(GerEventosPermissions.Produtor.Edit, L("Permission:Produtor.Edit"));
+        produtorPermission.AddChild(GerEventosPermissions.Produtor.Desativar, L("Permission:Produtor.Desativar"));
+        produtorPermission.AddChild(GerEventosPermissions.Produtor.Ativar, L("Permission:Produtor.Ativar"));
+
 
         // Define suas próprias permissões aqui, se necessário. Exemplo:
         // myGroup.AddPermission(GerEventosPermissions.MyPermission1, L("Permission:MyPermission1"));

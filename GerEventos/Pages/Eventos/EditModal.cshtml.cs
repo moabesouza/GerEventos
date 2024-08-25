@@ -10,6 +10,7 @@ using GerEventos.Services.BalcaoVendas;
 using GerEventos.Services.TipoEventos;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Volo.Abp.Application.Dtos;
+using GerEventos.Services.Produtores;
 
 namespace GerEventos.Pages.Eventos
 {
@@ -19,26 +20,31 @@ namespace GerEventos.Pages.Eventos
         [BindProperty(SupportsGet = true)]
         public Guid Id { get; set; }
 
+
         [BindProperty]
         public CreateUpdateEventoDto Evento { get; set; }
         public List<SelectListItem> TipoEventos { get; set; } = new List<SelectListItem>();
         public List<SelectListItem> BalcaoVendas { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> Produtores { get; set; } = new List<SelectListItem>();
 
         private readonly IEventoAppService _eventoAppService;
         private readonly ITipoEventoAppService _tipoEventoAppService;
         private readonly IBalcaoVendasAppService _balcaoVendasAppService;
+        private readonly IProdutorAppService _produtorAppService;
 
         public EditModalModel(
-            IEventoAppService eventoAppService,
+             IEventoAppService eventoAppService,
             ITipoEventoAppService tipoEventoAppService,
-            IBalcaoVendasAppService balcaoVendasAppService)
+            IBalcaoVendasAppService balcaoVendasAppService,
+            IProdutorAppService produtorAppService)
         {
+            _produtorAppService = produtorAppService;
             _eventoAppService = eventoAppService;
             _tipoEventoAppService = tipoEventoAppService;
             _balcaoVendasAppService = balcaoVendasAppService;
         }
 
-        public async Task OnGetAsync(Guid id)
+        public async Task OnGetAsync()
         {
             var tipoEventosResult = await _tipoEventoAppService.GetListAsync(new PagedAndSortedResultRequestDto());
             TipoEventos = tipoEventosResult.Items.Select(t => new SelectListItem
@@ -49,6 +55,14 @@ namespace GerEventos.Pages.Eventos
          
             var balcaoVendasResult = await _balcaoVendasAppService.GetListAsync(new PagedAndSortedResultRequestDto());
             BalcaoVendas = balcaoVendasResult.Items.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Nome
+            }).ToList();
+
+    
+            var produtoresResult = await _produtorAppService.GetListAsync(new PagedAndSortedResultRequestDto());
+            Produtores = produtoresResult.Items.Select(b => new SelectListItem
             {
                 Value = b.Id.ToString(),
                 Text = b.Nome
@@ -66,7 +80,7 @@ namespace GerEventos.Pages.Eventos
                 return Page();
             }
 
-            await _eventoAppService.UpdateAsync(Evento.Id, Evento);
+            await _eventoAppService.UpdateAsync(Id, Evento);
             return NoContent();
         }
     }

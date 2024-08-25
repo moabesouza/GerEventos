@@ -10,9 +10,6 @@ namespace GerEventos.Services.Dtos.Eventos
 {
     public class CreateUpdateEventoDto
     {
-        [HiddenInput]
-        public Guid Id { get; set; }
-
         [Required]
         [StringLength(128)]
         [Display(Name = "Nome")]
@@ -24,7 +21,11 @@ namespace GerEventos.Services.Dtos.Eventos
 
         [Required]
         [Display(Name = "Balcão de Vendas")]
-        public Guid BalcaoVendasId { get; set; } 
+        public Guid BalcaoVendasId { get; set; }
+
+        [Required]
+        [Display(Name = "Produtor")]
+        public Guid ProdutorId { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
@@ -40,20 +41,7 @@ namespace GerEventos.Services.Dtos.Eventos
         [Display(Name = "Valor")]
         public decimal Valor { get; set; }
 
-        [Required]
-        [Display(Name = "Produtor")]
-        [StringLength(128)]
-        public string? Produtor { get; set; }
-
-        [Required]
-        [StringLength(256)]
-        [Display(Name = "Endereço")]
-        public string? Endereco { get; set; }
-
-
-        [StringLength(256)]
-        [Display(Name = "Site")]
-        public string? Site { get; set; }
+      
 
 
     }

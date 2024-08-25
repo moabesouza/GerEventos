@@ -13,13 +13,13 @@ namespace GerEventos.Services.Dtos.Eventos
         public string DataFim { get; set; }
         public decimal Valor { get; set; }
 
-        public string Produtor { get; set; }
-        public string Endereco { get; set; }
-        public string Site { get; set; }
         public Guid TipoEventoId { get; set; }
         public Guid BalcaoVendasId { get; set; }
+        public Guid ProdutorId { get; set; }
+
         public string? NomeBalcaoVendas { get; set; }
         public string? NomeTipoEvento { get; set; }
+        public string? NomeProdutor { get; set; }
     }
 }
 

@@ -60,7 +60,7 @@ $(function () {
                 },
                 {
                     title: l('Produtor'),
-                    data: "produtor"
+                    data: "nomeProdutor"
                 },
                 {
                     title: l('Tipo de Evento'),

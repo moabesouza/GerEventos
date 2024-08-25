@@ -13,7 +13,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace GerEventos.Migrations
 {
     [DbContext(typeof(GerEventosDbContext))]
-    [Migration("20240824131026_gerEventos")]
+    [Migration("20240825171824_gerEventos")]
     partial class gerEventos
     {
         /// <inheritdoc />
@@ -107,9 +107,66 @@ namespace GerEventos.Migrations
                     b.Property<DateTime>("DataInicio")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<Guid>("ProdutorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TipoEventoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BalcaoVendasId");
+
+                    b.HasIndex("ProdutorId");
+
+                    b.HasIndex("TipoEventoId");
+
+                    b.ToTable("AppEvento", (string)null);
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.Produtor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
                     b.Property<string>("Endereco")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExtraProperties")
                         .IsRequired()
@@ -129,27 +186,16 @@ namespace GerEventos.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("Produtor")
+                    b.Property<string>("Site")
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("Site")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<Guid>("TipoEventoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Valor")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BalcaoVendasId");
-
-                    b.HasIndex("TipoEventoId");
-
-                    b.ToTable("AppEventos", (string)null);
+                    b.ToTable("AppProdutor", (string)null);
                 });
 
             modelBuilder.Entity("GerEventos.Entities.TipoEvento", b =>
@@ -2088,6 +2134,12 @@ namespace GerEventos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("GerEventos.Entities.Produtor", "Produtor")
+                        .WithMany("Eventos")
+                        .HasForeignKey("ProdutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GerEventos.Entities.TipoEvento", "TipoEvento")
                         .WithMany("Eventos")
                         .HasForeignKey("TipoEventoId")
@@ -2095,6 +2147,8 @@ namespace GerEventos.Migrations
                         .IsRequired();
 
                     b.Navigation("BalcaoVendas");
+
+                    b.Navigation("Produtor");
 
                     b.Navigation("TipoEvento");
                 });
@@ -2251,6 +2305,11 @@ namespace GerEventos.Migrations
                 });
 
             modelBuilder.Entity("BalcaoVendas", b =>
+                {
+                    b.Navigation("Eventos");
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.Produtor", b =>
                 {
                     b.Navigation("Eventos");
                 });

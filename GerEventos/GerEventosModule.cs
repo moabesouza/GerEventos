@@ -198,6 +198,11 @@ public class GerEventosModule : AbpModule
             options.Conventions.AuthorizePage("/BalcaoVendas/Index", GerEventosPermissions.BalcaoVendas.Default);
             options.Conventions.AuthorizePage("/BalcaoVendas/CreateModal", GerEventosPermissions.BalcaoVendas.Create);
             options.Conventions.AuthorizePage("/BalcaoVendas/EditModal", GerEventosPermissions.BalcaoVendas.Edit);
+
+            // Configuração para a página de Produtor
+            options.Conventions.AuthorizePage("/Produtor/Index", GerEventosPermissions.Produtor.Default);
+            options.Conventions.AuthorizePage("/Produtor/CreateModal", GerEventosPermissions.Produtor.Create);
+            options.Conventions.AuthorizePage("/Produtor/EditModal", GerEventosPermissions.Produtor.Edit);
         });
     }
 

@@ -1,7 +1,7 @@
 ﻿@page
 @using GerEventos.Localization
 @using GerEventos.Permissions
-@using GerEventos.Pages.Eventos
+@using GerEventos.Pages.Produtor
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @model IndexModel
@@ -9,32 +9,26 @@
 @inject IAuthorizationService AuthorizationService
 @section scripts
 {
-    <abp-script src="/Pages/Eventos/Index.js" />
+    <abp-script src="/Pages/Produtor/Index.js" />
 }
-<meta charset="UTF-8">
 <abp-card>
     <abp-card-header>
         <abp-row>
             <abp-column size-md="_6">
-                <abp-card-title>@L["Eventos"]</abp-card-title>
+                <abp-card-title>@L["Produtores"].Value</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-end">
-                @if (await AuthorizationService.IsGrantedAsync(GerEventosPermissions.Evento.Create))
+                @if (await AuthorizationService.IsGrantedAsync(GerEventosPermissions.Produtor.Create))
                 {
-                    <abp-button id="NewEventoButton"
-                                text="@L["Novo Evento"].Value"
+                    <abp-button id="NewProdutorButton"
+                                text="@L["Novo produtor"].Value"
                                 icon="plus"
                                 button-type="Primary" />
                 }
-                <abp-button id="FilterButton"
-                            abp-collapse-id="collapseFilter"
-                            text="Filtro"
-                            icon="filter"
-                            button-type="Secondary" />
             </abp-column>
         </abp-row>
     </abp-card-header>
     <abp-card-body>
-        <abp-table striped-rows="true" id="EventosTable"></abp-table>
+        <abp-table striped-rows="true" id="ProdutorTable"></abp-table>
     </abp-card-body>
 </abp-card>

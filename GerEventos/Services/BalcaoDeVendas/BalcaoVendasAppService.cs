@@ -30,14 +30,14 @@ namespace GerEventos.Services.BalcaoVendas
         public async Task DeactivateAsync(Guid id)
         {
             var balcaoVendas = await Repository.GetAsync(id);
-            balcaoVendas.Status = (int)StatusEnum.Desativado;
+            balcaoVendas.Status = StatusEnum.Desativado;
             await Repository.UpdateAsync(balcaoVendas);
         }
 
         public async Task ActivateAsync(Guid id)
         {
             var balcaoVendas = await Repository.GetAsync(id);
-            balcaoVendas.Status = (int)StatusEnum.Ativado;
+            balcaoVendas.Status = StatusEnum.Ativado;
             await Repository.UpdateAsync(balcaoVendas);
         }
 

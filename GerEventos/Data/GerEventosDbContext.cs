@@ -19,6 +19,7 @@ public class GerEventosDbContext : AbpDbContext<GerEventosDbContext>
     public DbSet<Evento> Eventos { get; set; }
     public DbSet<TipoEvento> Tipo_Evento { get; set; }
     public DbSet<BalcaoVendas> Balcao_Vendas { get; set; }
+    public DbSet<Produtor> Produtores { get; set; }
 
     public const string DbTablePrefix = "App";
     public const string DbSchema = null;
@@ -43,7 +44,7 @@ public class GerEventosDbContext : AbpDbContext<GerEventosDbContext>
         builder.ConfigureIdentity();
         builder.ConfigureOpenIddict();
         builder.ConfigureTenantManagement();
-        
+
 
         builder.Entity<TipoEvento>(b =>
         {
@@ -63,16 +64,27 @@ public class GerEventosDbContext : AbpDbContext<GerEventosDbContext>
             b.Property(x => x.Localizacao).IsRequired().HasMaxLength(256);
         });
 
+        builder.Entity<Produtor>(b =>
+        {
+            b.ToTable(DbTablePrefix + "Produtor", DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Nome).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Endereco).HasMaxLength(256);
+            b.Property(x => x.Status).IsRequired();
+            b.Property(x => x.Site).HasMaxLength(128);
+        });
 
         builder.Entity<Evento>(b =>
         {
-            b.ToTable(DbTablePrefix + "Eventos", DbSchema);
+            b.ToTable(DbTablePrefix + "Evento", DbSchema);
             b.ConfigureByConvention();
             b.Property(e => e.Valor).HasColumnType("decimal(18,2)");
             b.Property(x => x.Nome).IsRequired().HasMaxLength(128);
-            b.Property(x => x.Produtor).HasMaxLength(128);
-            b.Property(x => x.Endereco).HasMaxLength(256);
-            b.Property(x => x.Site).HasMaxLength(256);
+
+            b.HasOne(x => x.Produtor)
+                .WithMany(p => p.Eventos)
+                .HasForeignKey(x => x.ProdutorId)
+                .IsRequired();
 
             b.HasOne(x => x.TipoEvento)
                 .WithMany(te => te.Eventos)

@@ -70,6 +70,12 @@ public class GerEventosMenuContributor : IMenuContributor
                     l["Balcão de vendas"],
                     url: "/BalcaoVendas"
                 ).RequirePermissions(GerEventosPermissions.BalcaoVendas.Default)
+            ).AddItem(
+                new ApplicationMenuItem(
+                    "GerEventos.Produtor",
+                    l["Produtor"],
+                    url: "/Produtor"
+                ).RequirePermissions(GerEventosPermissions.Produtor.Default)
             )
         );
 

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Volo.Abp.AspNetCore.Mvc.UI.RazorPages;
 using Volo.Abp.Application.Dtos;
 using GerEventos.Entities;
+using GerEventos.Services.Produtores;
 
 namespace GerEventos.Pages.Eventos
 {
@@ -20,16 +21,20 @@ namespace GerEventos.Pages.Eventos
         public CreateUpdateEventoDto Evento { get; set; } = new CreateUpdateEventoDto();
         public List<SelectListItem> TipoEventos { get; set; } = new List<SelectListItem>();
         public List<SelectListItem> BalcaoVendas { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> Produtores { get; set; } = new List<SelectListItem>();
 
         private readonly IEventoAppService _eventoAppService;
         private readonly ITipoEventoAppService _tipoEventoAppService;
         private readonly IBalcaoVendasAppService _balcaoVendasAppService;
+        private readonly IProdutorAppService _produtorAppService;
 
         public CreateModalModel(
             IEventoAppService eventoAppService,
             ITipoEventoAppService tipoEventoAppService,
-            IBalcaoVendasAppService balcaoVendasAppService)
+            IBalcaoVendasAppService balcaoVendasAppService,
+            IProdutorAppService produtorAppService)
         {
+            _produtorAppService = produtorAppService;
             _eventoAppService = eventoAppService;
             _tipoEventoAppService = tipoEventoAppService;
             _balcaoVendasAppService = balcaoVendasAppService;
@@ -41,6 +46,7 @@ namespace GerEventos.Pages.Eventos
 
             var tipoEventosResult = await _tipoEventoAppService.GetListAsync(requestDto);
             var balcaoVendasResult = await _balcaoVendasAppService.GetListAsync(requestDto);
+            var produtoresResult = await _produtorAppService.GetListAsync(requestDto);
 
             TipoEventos = tipoEventosResult.Items
                 .Where(t => t.Status == StatusEnum.Ativado)
@@ -59,6 +65,16 @@ namespace GerEventos.Pages.Eventos
                     Text = b.Nome
                 })
                 .ToList();
+
+
+            Produtores = produtoresResult.Items
+                .Where(b => b.Status == StatusEnum.Ativado)
+                .Select(b => new SelectListItem
+                {
+                    Value = b.Id.ToString(),
+                    Text = b.Nome
+                })
+                .ToList();
         }
 
 
@@ -66,19 +82,18 @@ namespace GerEventos.Pages.Eventos
         {
             if (!ModelState.IsValid)
             {
-                // Log erro de model state inválido
+         
                 return Page();
             }
 
             try
             {
-                await _eventoAppService.CreateAsync(Evento);
-                // Log sucesso
+                await _eventoAppService.CreateAsync(Evento);        
                 return NoContent();
             }
             catch (Exception ex)
             {
-                // Log erro de exceção
+         
                 ModelState.AddModelError(string.Empty, "Ocorreu um erro ao salvar o evento.");
                 return Page();
             }

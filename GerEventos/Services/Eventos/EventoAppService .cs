@@ -39,7 +39,7 @@ namespace GerEventos.Services.Eventos
         public override async Task<PagedResultDto<EventoDto>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
             var query = await _eventoRepository
-                .WithDetails(e => e.BalcaoVendas, e => e.TipoEvento) 
+                .WithDetails(e => e.BalcaoVendas, e => e.TipoEvento, e => e.Produtor) 
                 .OrderBy(e => e.Nome)
                 .ToListAsync();
 
