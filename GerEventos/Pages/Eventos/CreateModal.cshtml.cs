@@ -61,6 +61,7 @@ namespace GerEventos.Pages.Eventos
                 .ToList();
         }
 
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
