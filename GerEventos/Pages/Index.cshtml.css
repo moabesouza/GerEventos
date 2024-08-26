@@ -1,1 +1,53 @@
 ﻿
+
+.bg-primary {
+    background-color: #0056b3 !important; /* Azul Escuro */
+}
+
+.bg-secondary {
+    background-color: #6c757d !important; /* Cinza Escuro */
+}
+
+.bg-success {
+    background-color: #28a745 !important; /* Verde Vivo */
+}
+
+.bg-warning {
+    background-color: #ffc107 !important; /* Amarelo Brilhante */
+}
+
+.bg-danger {
+    background-color: #dc3545 !important; /* Vermelho Vivo */
+}
+
+.bg-info {
+    background-color: #17a2b8 !important; /* Azul Claro */
+}
+
+/* Estilo dos textos dos cards */
+.text-light {
+    color: #ffffff !important; /* Texto claro para contraste em fundos escuros */
+}
+
+.text-dark {
+    color: #212529 !important; /* Texto escuro para contraste em fundos claros */
+}
+
+/* Estilo dos headers dos cards */
+.card-header {
+    background-color: #fff !important;
+    border-bottom: 1px solid #e7e9ec !important;
+}
+
+
+.card-body {
+    padding: 1.25rem !important;
+}
+    .card-body h3 {
+        color: #ffffff !important; 
+    }
+
+/* Alinhamento centralizado para o texto */
+.text-center {
+    text-align: center !important;
+}

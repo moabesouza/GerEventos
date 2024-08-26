@@ -5,3 +5,41 @@
     --lpx-logo-icon: url('/images/logo/leptonxlite/logo-light-thumbnail.png');
 }
 
+
+.select2-container {
+    height: 44.2px;
+    display: block;
+}
+
+.select2-container .select2-selection--single {
+    border-radius: 0.5rem !important;
+    border: 1px solid #e7e9ec !important;
+    background-color: #f5f5f7 !important;
+    height: 44.2px;
+    padding: 0 !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #495057 !important;
+    line-height: 44.2px !important;
+    padding: 0 !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered::placeholder {
+    color: #686b6e !important;
+    font-family: inherit !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding: 0 0.75rem !important; /* Ajusta o padding horizontal */
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 44.2px !important;
+}
+

@@ -9,12 +9,12 @@ $(function () {
             serverSide: true,
             paging: true,
             order: [[1, "asc"]],
-            searching: true,
+            searching: false,
             scrollX: true,
             ajax: abp.libs.datatables.createAjax(gerEventos.services.produtores.produtor.getList),
             columnDefs: [
                 {
-                    title: l('Grid:Acoes'),
+                    title: l('Grid:Acoes"'),
                     rowAction: {
                         items: [
                             {

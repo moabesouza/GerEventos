@@ -9,21 +9,6 @@
 @inject IAuthorizationService AuthorizationService
 
 
-    <style>
-
-        .auto-complete-select .dropdown-menu {
-            max-height: 200px; /* Adjust the maximum height as needed */
-            overflow-y: auto;
-        }
-
-        .auto-complete-select {
-            border-radius: 0.25rem;
-            padding: 0.375rem 0.75rem;
-        }
-    </style>
-
-
-
 @section scripts
 {
     <abp-script src="/Pages/Eventos/Index.js" />
@@ -86,7 +71,8 @@
         </abp-row>
 
         <abp-collapse-body id="collapseFilter">
-            <hr style="height:2px;color:darkblue;background-color:darkblue;" />
+            <hr class="my-4 border-primary" />
+
 
             <abp-row>
                 <abp-column size-md="_4">
@@ -121,7 +107,8 @@
                             text="Limpar filtro"
                             button-type="Warning" />
             </abp-column>
-            <hr style="height:2px;color:darkblue;background-color:darkblue;" />
+            <hr class="my-4 border-primary" />
+
 
         </abp-collapse-body>
     </abp-card-header>

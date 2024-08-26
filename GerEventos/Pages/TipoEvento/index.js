@@ -9,7 +9,7 @@ $(function () {
             serverSide: true,
             paging: true,
             order: [[1, "asc"]],
-            searching: true, 
+            searching: false, 
             scrollX: true,
             ajax: abp.libs.datatables.createAjax(gerEventos.services.tipoEventos.tipoEvento.getList),
             columnDefs: [
