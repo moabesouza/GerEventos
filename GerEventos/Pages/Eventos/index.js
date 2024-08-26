@@ -17,12 +17,11 @@ $(function () {
                     nome: $('#FiltroEvento_Nome').val(),
                     produtorId: $('#FiltroEvento_Produtor').val(),
                     dataInicio: dataRange.startDate ? dataRange.startDate.toISOString() : null,
-                    dataFim: dataRange.endDate ? dataRange.endDate.endOf('day').toISOString() : null, 
+                    dataFim: dataRange.endDate ? dataRange.endDate.endOf('day').toISOString() : null,
                     skipCount: data.start,
                     maxResultCount: data.length,
                     sorting: data.columns[data.order[0].column].data + " " + data.order[0].dir
                 };
-
 
                 gerEventos.services.eventos.evento.getListFilter(filter).done(function (result) {
                     callback({
@@ -103,11 +102,18 @@ $(function () {
         dataTable.ajax.reload();
     });
 
+    // Clear filters and reload table
+    $('#LimpaFiltroButton').click(function () {
+        $('#FiltroEvento_Nome').val(''); 
+        $('#FiltroEvento_Produtor').val(null).trigger('change');
+        $('#FiltroEvento_DataRange').data('daterangepicker').setStartDate(moment().startOf('month'));
+        $('#FiltroEvento_DataRange').data('daterangepicker').setEndDate(moment().endOf('month')); 
+        dataTable.ajax.reload(); 
+    });
+
     // Open create modal on button click
     $('#NewEventoButton').click(function (e) {
         e.preventDefault();
         createModal.open();
     });
-
-
 });

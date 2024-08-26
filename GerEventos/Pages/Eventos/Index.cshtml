@@ -8,6 +8,22 @@
 @inject IStringLocalizer<GerEventosResource> L
 @inject IAuthorizationService AuthorizationService
 
+
+    <style>
+
+        .auto-complete-select .dropdown-menu {
+            max-height: 200px; /* Adjust the maximum height as needed */
+            overflow-y: auto;
+        }
+
+        .auto-complete-select {
+            border-radius: 0.25rem;
+            padding: 0.375rem 0.75rem;
+        }
+    </style>
+
+
+
 @section scripts
 {
     <abp-script src="/Pages/Eventos/Index.js" />
@@ -72,22 +88,29 @@
         <abp-collapse-body id="collapseFilter">
             <hr style="height:2px;color:darkblue;background-color:darkblue;" />
 
-
-
-            <abp-input id="FiltroEvento_Nome" asp-for="@Model.FiltroEvento.Nome" />
-
-            <select asp-for="FiltroEvento.ProdutorId"
-                    id="FiltroEvento_Produtor"
-                    class="auto-complete-select">
-            </select>
-
-                <abp-date-range-picker id="FiltroEvento_DataRange"
-                                       name="FiltroEvento.DataRange"
-                                       clear-button="false"
-                                       today-button-classes="btn-primary"
-                                       asp-for-start="FiltroEvento.DataInicio"
-                                       asp-for-end="FiltroEvento.DataFim"
-                                       placeholder="Selecione o intervalo de datas" />
+            <abp-row>
+                <abp-column size-md="_4">
+                    <abp-input id="FiltroEvento_Nome" asp-for="@Model.FiltroEvento.Nome" />
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-date-range-picker id="FiltroEvento_DataRange"
+                                           name="FiltroEvento.DataRange"
+                                           clear-button="false"
+                                           today-button-classes="btn-primary"
+                                           asp-for-start="FiltroEvento.DataInicio"
+                                           asp-for-end="FiltroEvento.DataFim"
+                                           placeholder="Selecione o intervalo de datas" />
+                </abp-column>
+                <abp-column size-md="_4">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.FiltroEvento.ProdutorId"></label>
+                        <select asp-for="FiltroEvento.ProdutorId"
+                                id="FiltroEvento_Produtor"
+                                class="auto-complete-select form-control ">
+                        </select>
+                    </div>
+                </abp-column>
+            </abp-row>
 
 
             <abp-column size-md="_6">
