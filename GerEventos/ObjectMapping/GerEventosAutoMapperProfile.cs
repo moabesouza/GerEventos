@@ -26,6 +26,10 @@ public class GerEventosAutoMapperProfile : Profile
 
         CreateMap<EventoDto, CreateUpdateEventoDto>();
 
+        CreateMap<FilterEventoDto, Evento>();
+          
+
+
         // Mapeamento para TipoEvento
         CreateMap<TipoEvento, TipoEventoDto>();
         CreateMap<CreateUpdateTipoEventoDto, TipoEvento>();

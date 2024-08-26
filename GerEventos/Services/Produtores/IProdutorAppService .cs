@@ -3,6 +3,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using GerEventos.Entities;
 using GerEventos.Services.Dtos.Produtor;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GerEventos.Services.Produtores
 {
@@ -16,5 +17,6 @@ namespace GerEventos.Services.Produtores
         Task DeactivateAsync(Guid id);
         Task ActivateAsync(Guid id);
         Task<bool> NomeJaExisteAsync(string nome);
+        Task<ListResultDto<ProdutorDto>> GetSelectProdutorAsync([FromQuery] string filter = null);
     }
 }

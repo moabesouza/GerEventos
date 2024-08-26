@@ -7,11 +7,46 @@
 @model IndexModel
 @inject IStringLocalizer<GerEventosResource> L
 @inject IAuthorizationService AuthorizationService
+
 @section scripts
 {
     <abp-script src="/Pages/Eventos/Index.js" />
+
+    <script>
+        $(document).ready(function () {
+            $('#FiltroEvento_Produtor').select2({
+                placeholder: "Selecione um produtor",
+                allowClear: true,
+                ajax: {
+                    url: '/api/app/produtor/',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return { filter: params.term };
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: $.map(data.items, function (item) {
+                                if (item.nome.toLowerCase().indexOf(params.term.toLowerCase()) >= 0) {
+                                    return { id: item.id, text: item.nome };
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 1
+            });
+        });
+    </script>
+
 }
+
+
+
+
 <meta charset="UTF-8">
+
 <abp-card>
     <abp-card-header>
         <abp-row>
@@ -33,6 +68,39 @@
                             button-type="Secondary" />
             </abp-column>
         </abp-row>
+
+        <abp-collapse-body id="collapseFilter">
+            <hr style="height:2px;color:darkblue;background-color:darkblue;" />
+
+
+
+            <abp-input id="FiltroEvento_Nome" asp-for="@Model.FiltroEvento.Nome" />
+
+            <select asp-for="FiltroEvento.ProdutorId"
+                    id="FiltroEvento_Produtor"
+                    class="auto-complete-select">
+            </select>
+
+                <abp-date-range-picker id="FiltroEvento_DataRange"
+                                       name="FiltroEvento.DataRange"
+                                       clear-button="false"
+                                       today-button-classes="btn-primary"
+                                       asp-for-start="FiltroEvento.DataInicio"
+                                       asp-for-end="FiltroEvento.DataFim"
+                                       placeholder="Selecione o intervalo de datas" />
+
+
+            <abp-column size-md="_6">
+                <abp-button id="ApplyFilterButton"
+                            text="Aplicar filtro"
+                            button-type="Primary" />
+                <abp-button id="LimpaFiltroButton"
+                            text="Limpar filtro"
+                            button-type="Warning" />
+            </abp-column>
+            <hr style="height:2px;color:darkblue;background-color:darkblue;" />
+
+        </abp-collapse-body>
     </abp-card-header>
     <abp-card-body>
         <abp-table striped-rows="true" id="EventosTable"></abp-table>

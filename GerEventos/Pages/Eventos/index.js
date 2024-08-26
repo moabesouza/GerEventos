@@ -3,20 +3,41 @@ $(function () {
     var createModal = new abp.ModalManager(abp.appPath + 'Eventos/CreateModal');
     var editModal = new abp.ModalManager(abp.appPath + 'Eventos/EditModal');
 
-    // Exibir dados retornados pela API para depuração
-
     // Initialize DataTable
     var dataTable = $('#EventosTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
             paging: true,
             order: [[1, "asc"]],
-            searching: true,
+            searching: false,
             scrollX: true,
-            ajax: abp.libs.datatables.createAjax(gerEventos.services.eventos.evento.getList),
+            ajax: function (data, callback, settings) {
+                var dataRange = $('#FiltroEvento_DataRange').data('daterangepicker');
+                var filter = {
+                    nome: $('#FiltroEvento_Nome').val(),
+                    produtorId: $('#FiltroEvento_Produtor').val(),
+                    dataInicio: dataRange.startDate ? dataRange.startDate.toISOString() : null,
+                    dataFim: dataRange.endDate ? dataRange.endDate.endOf('day').toISOString() : null, 
+                    skipCount: data.start,
+                    maxResultCount: data.length,
+                    sorting: data.columns[data.order[0].column].data + " " + data.order[0].dir
+                };
+
+
+                gerEventos.services.eventos.evento.getListFilter(filter).done(function (result) {
+                    callback({
+                        recordsTotal: result.totalCount,
+                        recordsFiltered: result.totalCount,
+                        data: result.items
+                    });
+                }).fail(function (xhr, status, error) {
+                    abp.notify.error(l('Erro ao carregar os eventos.'));
+                    console.error(xhr, status, error);
+                });
+            },
             columnDefs: [
                 {
-                    title: l('Ação'),
+                    title: l('Grid:Acoes'),
                     rowAction: {
                         items: [
                             {
@@ -50,13 +71,11 @@ $(function () {
                 },
                 {
                     title: l('Data Início'),
-                    data: "dataInicio",
-                 
+                    data: "dataInicio"
                 },
                 {
                     title: l('Data Fim'),
-                    data: "dataFim",
-                   
+                    data: "dataFim"
                 },
                 {
                     title: l('Produtor'),
@@ -79,11 +98,16 @@ $(function () {
         dataTable.ajax.reload();
     });
 
-
+    // Apply filter on button click
+    $('#ApplyFilterButton').click(function () {
+        dataTable.ajax.reload();
+    });
 
     // Open create modal on button click
     $('#NewEventoButton').click(function (e) {
         e.preventDefault();
         createModal.open();
     });
+
+
 });

@@ -3,6 +3,8 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using GerEventos.Services.Dtos.Eventos;
 using GerEventos.Entities;
+using GerEventos.Services.Dtos.Produtor;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GerEventos.Services.Eventos
 {
@@ -13,5 +15,7 @@ namespace GerEventos.Services.Eventos
             PagedAndSortedResultRequestDto, // Used for paging/sorting
             CreateUpdateEventoDto> // Used to create/update an event
     {
+        Task<PagedResultDto<EventoDto>> GetListFilterAsync(FilterEventoDto input);
+     
     }
 }
