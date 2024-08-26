@@ -70,7 +70,7 @@ $(function () {
                     data: "nome"
                 },
                 {
-                    title: l('Data Início'),
+                    title: l('Grid:DataInicio'),
                     data: "dataInicio"
                 },
                 {

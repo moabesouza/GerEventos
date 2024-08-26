@@ -9,12 +9,12 @@ $(function () {
             serverSide: true,
             paging: true,
             order: [[1, "asc"]],
-            searching: true, // Enable global search
+            searching: false, 
             scrollX: true,
             ajax: abp.libs.datatables.createAjax(gerEventos.services.balcaoVendas.balcaoVendas.getList),
             columnDefs: [
                 {
-                    title: l('Ação'),
+                    title: l('Grid:Acoes'),
                     rowAction: {
                         items: [
                             {
@@ -74,7 +74,7 @@ $(function () {
                     data: "nome"
                 },
                 {
-                    title: l('Localização'),
+                    title: l('Grid:Localizacao'),
                     data: "localizacao"
                 },
 

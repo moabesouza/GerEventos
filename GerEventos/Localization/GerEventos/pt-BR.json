@@ -4,6 +4,10 @@
     "Welcome_Title": "Seja bem-vindo!",
     "Welcome_Text": "Este é um modelo de inicialização de aplicativo de camada única minimalista para o ABP Framework.",
     "Menu:Home": "Principal",
-    "Grid:Acoes": "Ações"
+    "Grid:Acoes": "Ações",
+    "Grid:DataInicio": "Data Início",
+    "Grid:Localizacao": "Localização",
+
+    "Menu:GerEventos": "Gerenciar Eventos"
   }
 }
