@@ -19,17 +19,12 @@ $(function () {
                         items: [
                             {
                                 text: l('Editar'),
-                                visible: abp.auth.isGranted('GerEventos.Produtor.Edit'),
                                 action: function (data) {
                                     editModal.open({ id: data.record.id });
                                 }
                             },
                             {
                                 text: l('Desativar'),
-                                visible: abp.auth.isGranted('GerEventos.Produtor.Desativar'),
-                                confirmMessage: function (data) {
-                                    return l('Deseja realmente desativar?');
-                                },
                                 action: function (data) {
                                     gerEventos.services.produtores.produtor
                                         .deactivate(data.record.id)
@@ -45,10 +40,6 @@ $(function () {
                             },
                             {
                                 text: l('Ativar'),
-                                visible: abp.auth.isGranted('GerEventos.Produtor.Ativar'),
-                                confirmMessage: function (data) {
-                                    return l('Deseja realmente ativar?');
-                                },
                                 action: function (data) {
                                     gerEventos.services.produtores.produtor
                                         .activate(data.record.id)
@@ -73,7 +64,10 @@ $(function () {
                     title: l('Status'),
                     data: "status",
                     render: function (data) {
-                        return data === 1 ? '<span class="badge rounded-pill bg-success">Ativado</span>' : '<span class="badge rounded-pill bg-info">Desativado</span>';
+                      
+                        return data === 1 ?
+                            '<span class="badge rounded-pill bg-success">Ativado</span>' :
+                            '<span class="badge rounded-pill bg-info">Desativado</span>';
                     }
                 }
             ]
@@ -93,5 +87,33 @@ $(function () {
     $('#NewProdutorButton').click(function (e) {
         e.preventDefault();
         createModal.open();
+    });
+
+    // Update dropdown actions based on permissions and status
+    $('#ProdutorTable').on('draw.dt', function () {
+        $('#ProdutorTable tbody tr').each(function () {
+            var $row = $(this);
+            var data = dataTable.row($row).data();
+            var status = data.status;
+
+            // Find dropdown for this row
+            var $dropdown = $row.find('.dropdown-menu');
+
+            // Hide all actions initially
+            $dropdown.find('a.dropdown-item').hide();
+
+            // Show relevant actions based on status and permissions
+            if (abp.auth.isGranted('GerEventos.Produtor.Edit')) {
+                $dropdown.find('a:contains("Editar")').show();
+            }
+
+            if (abp.auth.isGranted('GerEventos.Produtor.Desativar') && status === 1) {
+                $dropdown.find('a:contains("Desativar")').show();
+            }
+
+            if (abp.auth.isGranted('GerEventos.Produtor.Ativar') && status === 2) {
+                $dropdown.find('a:contains("Ativar")').show();
+            }
+        });
     });
 });

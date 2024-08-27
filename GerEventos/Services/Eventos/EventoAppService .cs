@@ -148,11 +148,5 @@ namespace GerEventos.Services.Eventos
         }
 
 
-
-
-
-
-
-
     }
 }
