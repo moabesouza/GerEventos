@@ -14,6 +14,8 @@
     <abp-script src="/Pages/Eventos/Index.cshtml.js" />
 }
 
+
+
 <abp-card>
     <abp-card-header>
         <abp-row>
@@ -44,6 +46,7 @@
                 <abp-column size-md="_4">
                     <abp-input id="FiltroEvento_Nome" asp-for="@Model.FiltroEvento.Nome" />
                 </abp-column>
+
                 <abp-column size-md="_4">
                     <abp-date-range-picker id="FiltroEvento_DataRange"
                                            name="FiltroEvento.DataRange"
@@ -51,8 +54,15 @@
                                            today-button-classes="btn-primary"
                                            asp-for-start="FiltroEvento.DataInicio"
                                            asp-for-end="FiltroEvento.DataFim"
-                                           placeholder="Selecione o intervalo de datas" />
+                                           placeholder="Selecione o intervalo de datas"
+                                           min-date="null"
+                                           max-date="null" />
                 </abp-column>
+
+
+
+
+
                 <abp-column size-md="_4">
                     <div class="mb-3">
                         <label class="form-label" asp-for="@Model.FiltroEvento.ProdutorId"></label>

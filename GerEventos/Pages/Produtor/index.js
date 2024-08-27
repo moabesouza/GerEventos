@@ -14,7 +14,7 @@ $(function () {
             ajax: abp.libs.datatables.createAjax(gerEventos.services.produtores.produtor.getList),
             columnDefs: [
                 {
-                    title: l('Grid:Acoes"'),
+                    title: l('Grid:Acoes'),
                     rowAction: {
                         items: [
                             {
