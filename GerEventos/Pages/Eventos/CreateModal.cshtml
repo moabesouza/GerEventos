@@ -32,15 +32,19 @@
 
 
             <abp-row>
-                <abp-column size-md="_4">
-                    <abp-date-picker asp-for="@Model.Evento.DataInicio" />
-                </abp-column>
+                <abp-column size-md="_6">
+                    <abp-date-range-picker 
+                                           name="Evento.DataRange"
+                                           clear-button="false"
+                                           today-button-classes="btn-primary"
+                                           asp-for-start="Evento.DataInicio"
+                                           asp-for-end="Evento.DataFim"
+                                           placeholder="Selecione o intervalo de datas"
+                                           min-date="null"
+                                           max-date="null" />
+                </abp-column> 
 
-                <abp-column size-md="_4">
-                    <abp-date-picker asp-for="@Model.Evento.DataFim" />
-                </abp-column>
-
-                <abp-column size-md="_4">
+                <abp-column size-md="_6">
                     <abp-input asp-for="@Model.Evento.Valor"  />
                 </abp-column>
             </abp-row>

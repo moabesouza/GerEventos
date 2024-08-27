@@ -30,13 +30,13 @@ namespace GerEventos.Services.Dtos.Eventos
 
         [Required]
         [DataType(DataType.Date)]
-        [Display(Name = "Data Início")]
-        public DateTime DataInicio { get; set; } = DateTime.Now;
+        [Display(Name = "Período(Início - Fim)")]
+        public DateTime DataInicio { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Data Fim")]
-        public DateTime DataFim { get; set; } = DateTime.Now;
+        public DateTime DataFim { get; set; }
 
         [Required]
         [Display(Name = "Valor")]
