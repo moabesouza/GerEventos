@@ -104,12 +104,17 @@ $(function () {
 
     // Clear filters and reload table
     $('#LimpaFiltroButton').click(function () {
-        $('#FiltroEvento_Nome').val(''); 
+        $('#FiltroEvento_Nome').val('');
         $('#FiltroEvento_Produtor').val(null).trigger('change');
-        $('#FiltroEvento_DataRange').data('daterangepicker').setStartDate(moment().startOf('month'));
-        $('#FiltroEvento_DataRange').data('daterangepicker').setEndDate(moment().endOf('month')); 
-        dataTable.ajax.reload(); 
+
+        $('#FiltroEvento_DataRange').data('daterangepicker').setStartDate('');
+        $('#FiltroEvento_DataRange').data('daterangepicker').setEndDate('');
+
+        $('#FiltroEvento_DataRange').val('');
+
+        dataTable.ajax.reload();
     });
+
 
     // Open create modal on button click
     $('#NewEventoButton').click(function (e) {
