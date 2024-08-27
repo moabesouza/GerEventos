@@ -9,6 +9,7 @@
     Layout = null;
 }
 <abp-dynamic-form abp-model="Produtor" asp-page="/Produtor/CreateModal">
+    @Html.AntiForgeryToken()
     <abp-modal>
         <abp-modal-header title="@L["Novo produtor"].Value"></abp-modal-header>
         <abp-modal-body>

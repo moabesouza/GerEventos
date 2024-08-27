@@ -9,6 +9,7 @@
     Layout = null;
 }
 <abp-dynamic-form abp-model="TipoEvento" asp-page="/TipoEvento/EditModal">
+    @Html.AntiForgeryToken()
     <abp-modal>
         <abp-modal-header title="@L["Editar"].Value"></abp-modal-header>
         <abp-modal-body>

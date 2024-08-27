@@ -12,6 +12,7 @@
 <script src="~/functions-util/decimal-mask.js"></script>
 
 <form asp-page-handler="Edit" id="editEventForm">
+    @Html.AntiForgeryToken()
     <abp-modal centered="true" scrollable="true" size="Large">
         <abp-modal-header title="@L["Editar evento"].Value"></abp-modal-header>
         <abp-modal-body>

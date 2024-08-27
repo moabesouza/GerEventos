@@ -9,6 +9,7 @@
     Layout = null;
 }
 <abp-dynamic-form abp-model="BalcaoVendas" asp-page="/BalcaoVendas/CreateModal">
+    @Html.AntiForgeryToken()
     <abp-modal>
         <abp-modal-header title="@L["Novo Balcão"].Value"></abp-modal-header>
         <abp-modal-body>
