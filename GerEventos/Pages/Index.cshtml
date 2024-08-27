@@ -1,5 +1,4 @@
-﻿
-@page
+﻿@page
 @using Microsoft.AspNetCore.Mvc.Localization
 @using GerEventos.Localization
 @using Volo.Abp.Users
@@ -17,7 +16,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-      
+
             var eventosPorMesData = @Html.Raw(Json.Serialize(Model.EventosPorMes));
             var eventosPorTipoData = @Html.Raw(Json.Serialize(Model.EventosPorTipo));
 
@@ -127,7 +126,8 @@
             </div>
         </div>
     </div>
-
+    @if (Model.EventCount > 0)
+    {
         <div class="row">
             <div class="col-md-6 mb-4">
                 <div class="card fixed-size-card">
@@ -157,13 +157,12 @@
             </div>
         </div>
 
-
-
-</div>
-
-
+    }
 
 </div>
+
+
+
 
 
 

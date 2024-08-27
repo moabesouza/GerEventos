@@ -8,12 +8,15 @@
     Layout = null;
 }
 
+<script src="~/libs/jquery-validation/mask/jquery.mask.min.js"></script>
+<script src="~/functions-util/decimal-mask.js"></script>
+
 <form asp-page-handler="Create" id="createEventForm">
     <abp-modal centered="true" scrollable="true" size="Large">
 
         <abp-modal-header title="@L["Novo evento"].Value"></abp-modal-header>
         <abp-modal-body>
-           
+
             <abp-input asp-for="@Model.Evento.Nome" />
 
             <abp-row>
@@ -27,6 +30,7 @@
 
             <abp-select asp-for="Evento.ProdutorId" asp-items="@Model.Produtores" required />
 
+
             <abp-row>
                 <abp-column size-md="_4">
                     <abp-date-picker asp-for="@Model.Evento.DataInicio" />
@@ -37,7 +41,7 @@
                 </abp-column>
 
                 <abp-column size-md="_4">
-                    <abp-input asp-for="@Model.Evento.Valor" />
+                    <abp-input asp-for="@Model.Evento.Valor"  />
                 </abp-column>
             </abp-row>
 

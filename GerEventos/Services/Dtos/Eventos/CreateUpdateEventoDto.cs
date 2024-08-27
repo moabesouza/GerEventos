@@ -1,4 +1,5 @@
-﻿using GerEventos.Services.Dtos.BalcaoVendas;
+﻿using GerEventos.Attributes;
+using GerEventos.Services.Dtos.BalcaoVendas;
 using GerEventos.Services.Dtos.TipoEvento;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -39,7 +40,8 @@ namespace GerEventos.Services.Dtos.Eventos
 
         [Required]
         [Display(Name = "Valor")]
-        public decimal Valor { get; set; }
+        [Decimal]
+        public string Valor { get; set; }
 
       
 
