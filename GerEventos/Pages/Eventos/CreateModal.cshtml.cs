@@ -82,18 +82,18 @@ namespace GerEventos.Pages.Eventos
         {
             if (!ModelState.IsValid)
             {
-         
+
                 return Page();
             }
 
             try
             {
-                await _eventoAppService.CreateAsync(Evento);        
+                await _eventoAppService.CreateAsync(Evento);
                 return NoContent();
             }
             catch (Exception ex)
             {
-         
+
                 ModelState.AddModelError(string.Empty, "Ocorreu um erro ao salvar o evento.");
                 return Page();
             }

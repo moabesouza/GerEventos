@@ -10,6 +10,9 @@
 
 <script src="~/libs/jquery-validation/mask/jquery.mask.min.js"></script>
 <script src="~/functions-util/decimal-mask.js"></script>
+<abp-script src="/Pages/Eventos/CreateModal.cshtml.js" />
+
+
 
 <form asp-page-handler="Create" id="createEventForm">
     @Html.AntiForgeryToken()
@@ -31,11 +34,17 @@
 
             <abp-select asp-for="Evento.ProdutorId" asp-items="@Model.Produtores" required />
 
+            <abp-column id="produtorInfo" class="d-none mb-3">
+                <label class="form-label">Informações do Produtor</label>
+                <abp-list-group>
+                    <abp-list-group-item id="produtorEndereco">Endereço: </abp-list-group-item>
+                    <abp-list-group-item id="produtorSite">Site: </abp-list-group-item>
+                </abp-list-group>
+            </abp-column>
 
             <abp-row>
                 <abp-column size-md="_6">
-                    <abp-date-range-picker 
-                                           name="Evento.DataRange"
+                    <abp-date-range-picker name="Evento.DataRange"
                                            clear-button="false"
                                            today-button-classes="btn-primary"
                                            asp-for-start="Evento.DataInicio"
@@ -43,10 +52,10 @@
                                            placeholder="Selecione o intervalo de datas"
                                            min-date="null"
                                            max-date="null" />
-                </abp-column> 
+                </abp-column>
 
                 <abp-column size-md="_6">
-                    <abp-input asp-for="@Model.Evento.Valor"  />
+                    <abp-input asp-for="@Model.Evento.Valor" />
                 </abp-column>
             </abp-row>
 
