@@ -10,7 +10,7 @@ public class GerEventosPermissionDefinitionProvider : PermissionDefinitionProvid
     {
         var myGroup = context.AddGroup(GerEventosPermissions.GroupName);
 
-      
+
         AddPermissionWithChildren(myGroup, GerEventosPermissions.Evento.Default, "Permission:Evento", new[]
         {
             GerEventosPermissions.Evento.Create,
