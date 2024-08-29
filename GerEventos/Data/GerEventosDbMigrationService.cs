@@ -34,65 +34,69 @@ public class GerEventosDbMigrationService : ITransientDependency
 
     public async Task MigrateAsync()
     {
-        var initialMigrationAdded = AddInitialMigrationIfNotExist();
-
-        if (initialMigrationAdded)
+        if (AddInitialMigrationIfNotExist())
         {
             return;
         }
 
         Logger.LogInformation("Started database migrations...");
 
-        await MigrateDatabaseSchemaAsync();
-        await SeedDataAsync();
-
-        Logger.LogInformation($"Successfully completed host database migrations.");
+        await MigrateAndSeedHostDatabaseAsync();
 
         var tenants = await _tenantRepository.GetListAsync(includeDetails: true);
 
         var migratedDatabaseSchemas = new HashSet<string>();
         foreach (var tenant in tenants)
         {
-            using (_currentTenant.Change(tenant.Id))
-            {
-                if (tenant.ConnectionStrings.Any())
-                {
-                    var tenantConnectionStrings = tenant.ConnectionStrings
-                        .Select(x => x.Value)
-                        .ToList();
-
-                    if (!migratedDatabaseSchemas.IsSupersetOf(tenantConnectionStrings))
-                    {
-                        await MigrateDatabaseSchemaAsync(tenant);
-
-                        migratedDatabaseSchemas.AddIfNotContains(tenantConnectionStrings);
-                    }
-                }
-
-                await SeedDataAsync(tenant);
-            }
-
-            Logger.LogInformation($"Successfully completed {tenant.Name} tenant database migrations.");
+            await MigrateAndSeedTenantDatabaseAsync(tenant, migratedDatabaseSchemas);
         }
 
         Logger.LogInformation("Successfully completed all database migrations.");
         Logger.LogInformation("You can safely end this process...");
     }
 
+    private async Task MigrateAndSeedHostDatabaseAsync()
+    {
+        Logger.LogInformation("Migrating and seeding host database...");
+        await MigrateDatabaseSchemaAsync();
+        await SeedDataAsync();
+        Logger.LogInformation("Successfully completed host database migrations.");
+    }
+
+    private async Task MigrateAndSeedTenantDatabaseAsync(Tenant tenant, HashSet<string> migratedDatabaseSchemas)
+    {
+        using (_currentTenant.Change(tenant.Id))
+        {
+            if (tenant.ConnectionStrings.Any())
+            {
+                var tenantConnectionStrings = tenant.ConnectionStrings.Select(x => x.Value).ToList();
+
+                if (!migratedDatabaseSchemas.IsSupersetOf(tenantConnectionStrings))
+                {
+                    await MigrateDatabaseSchemaAsync(tenant);
+                    migratedDatabaseSchemas.UnionWith(tenantConnectionStrings);
+                }
+            }
+
+            await SeedDataAsync(tenant);
+            Logger.LogInformation($"Successfully completed {tenant.Name} tenant database migrations.");
+        }
+    }
+
     private async Task MigrateDatabaseSchemaAsync(Tenant tenant = null)
     {
-        Logger.LogInformation($"Migrating schema for {(tenant == null ? "host" : tenant.Name + " tenant")} database...");
+        var target = tenant == null ? "host" : $"{tenant.Name} tenant";
+        Logger.LogInformation($"Migrating schema for {target} database...");
         await _dbSchemaMigrator.MigrateAsync();
     }
 
     private async Task SeedDataAsync(Tenant tenant = null)
     {
-        Logger.LogInformation($"Executing {(tenant == null ? "host" : tenant.Name + " tenant")} database seed...");
-
+        var target = tenant == null ? "host" : $"{tenant.Name} tenant";
+        Logger.LogInformation($"Executing {target} database seed...");
         await _dataSeeder.SeedAsync(new DataSeedContext(tenant?.Id)
             .WithProperty(IdentityDataSeedContributor.AdminEmailPropertyName, IdentityDataSeedContributor.AdminEmailDefaultValue)
-            .WithProperty(IdentityDataSeedContributor.AdminPasswordPropertyName, IdentityDataSeedContributor.AdminPasswordDefaultValue)
-        );
+            .WithProperty(IdentityDataSeedContributor.AdminPasswordPropertyName, IdentityDataSeedContributor.AdminPasswordDefaultValue));
     }
 
     private bool AddInitialMigrationIfNotExist()
@@ -103,27 +107,18 @@ public class GerEventosDbMigrationService : ITransientDependency
             {
                 return false;
             }
-        }
-        catch (Exception)
-        {
-            return false;
-        }
 
-        try
-        {
             if (!MigrationsFolderExists())
             {
                 AddInitialMigration();
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Logger.LogWarning("Couldn't determinate if any migrations exist : " + e.Message);
+            Logger.LogWarning($"Failed to determine if initial migration is needed: {ex.Message}");
             return false;
         }
     }
@@ -135,47 +130,45 @@ public class GerEventosDbMigrationService : ITransientDependency
 
     private bool MigrationsFolderExists()
     {
-        var dbMigrationsProjectFolder = GetEntityFrameworkCoreProjectFolderPath();
-
-        return Directory.Exists(Path.Combine(dbMigrationsProjectFolder, "Migrations"));
+        var migrationsPath = Path.Combine(GetEntityFrameworkCoreProjectFolderPath(), "Migrations");
+        return Directory.Exists(migrationsPath);
     }
 
     private void AddInitialMigration()
     {
         Logger.LogInformation("Creating initial migration...");
 
-        string argumentPrefix;
-        string fileName;
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        {
-            argumentPrefix = "-c";
-            fileName = "/bin/bash";
-        }
-        else
-        {
-            argumentPrefix = "/C";
-            fileName = "cmd.exe";
-        }
-
-        var procStartInfo = new ProcessStartInfo(fileName,
-            $"{argumentPrefix} \"abp create-migration-and-run-migrator \"{GetEntityFrameworkCoreProjectFolderPath()}\" --nolayers\""
-        );
+        var (fileName, arguments) = GetMigrationProcessInfo();
 
         try
         {
-            Process.Start(procStartInfo);
+            Process.Start(new ProcessStartInfo(fileName, arguments)
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw new Exception("Couldn't run ABP CLI...");
+            Logger.LogError($"Failed to run ABP CLI for migration: {ex.Message}");
+            throw new Exception("Couldn't run ABP CLI...", ex);
         }
+    }
+
+    private (string fileName, string arguments) GetMigrationProcessInfo()
+    {
+        string argumentPrefix = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "/C" : "-c";
+        string fileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "cmd.exe" : "/bin/bash";
+        string projectPath = GetEntityFrameworkCoreProjectFolderPath();
+        string arguments = $"{argumentPrefix} \"abp create-migration-and-run-migrator \"{projectPath}\" --nolayers\"";
+
+        return (fileName, arguments);
     }
 
     private string GetEntityFrameworkCoreProjectFolderPath()
     {
         var slnDirectoryPath = GetSolutionDirectoryPath();
-
         if (slnDirectoryPath == null)
         {
             throw new Exception("Solution folder not found!");
@@ -188,14 +181,14 @@ public class GerEventosDbMigrationService : ITransientDependency
     {
         var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
 
-        while (Directory.GetParent(currentDirectory.FullName) != null)
+        while (currentDirectory?.Parent != null)
         {
-            currentDirectory = Directory.GetParent(currentDirectory.FullName);
-
-            if (Directory.GetFiles(currentDirectory.FullName).FirstOrDefault(f => f.EndsWith(".sln")) != null)
+            if (Directory.GetFiles(currentDirectory.FullName, "*.sln").Any())
             {
                 return currentDirectory.FullName;
             }
+
+            currentDirectory = currentDirectory.Parent;
         }
 
         return null;
