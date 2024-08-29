@@ -1,7 +1,6 @@
 using GerEventos.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
-using Volo.Abp.MultiTenancy;
 
 namespace GerEventos.Permissions;
 
@@ -11,37 +10,53 @@ public class GerEventosPermissionDefinitionProvider : PermissionDefinitionProvid
     {
         var myGroup = context.AddGroup(GerEventosPermissions.GroupName);
 
+      
+        AddPermissionWithChildren(myGroup, GerEventosPermissions.Evento.Default, "Permission:Evento", new[]
+        {
+            GerEventosPermissions.Evento.Create,
+            GerEventosPermissions.Evento.Edit,
+            GerEventosPermissions.Evento.Delete
+        });
 
-        // Permissões para Eventos
-        var eventosPermission = myGroup.AddPermission(GerEventosPermissions.Evento.Default, L("Permission:Evento"));
-        eventosPermission.AddChild(GerEventosPermissions.Evento.Create, L("Permission:Evento.Create"));
-        eventosPermission.AddChild(GerEventosPermissions.Evento.Edit, L("Permission:Evento.Edit"));
-        eventosPermission.AddChild(GerEventosPermissions.Evento.Delete, L("Permission:Evento.Delete"));
+        AddPermissionWithChildren(myGroup, GerEventosPermissions.TipoEvento.Default, "Permission:TipoEvento", new[]
+        {
+            GerEventosPermissions.TipoEvento.Create,
+            GerEventosPermissions.TipoEvento.Edit,
+            GerEventosPermissions.TipoEvento.Desativar,
+            GerEventosPermissions.TipoEvento.Ativar
+        });
 
-        // Permissões para TipoEventos
-        var tipoEventosPermission = myGroup.AddPermission(GerEventosPermissions.TipoEvento.Default, L("Permission:TipoEvento"));
-        tipoEventosPermission.AddChild(GerEventosPermissions.TipoEvento.Create, L("Permission:TipoEvento.Create"));
-        tipoEventosPermission.AddChild(GerEventosPermissions.TipoEvento.Edit, L("Permission:TipoEvento.Edit"));
-        tipoEventosPermission.AddChild(GerEventosPermissions.TipoEvento.Desativar, L("Permission:TipoEvento.Desativar"));
-        tipoEventosPermission.AddChild(GerEventosPermissions.TipoEvento.Ativar, L("Permission:TipoEvento.Ativar"));
+        AddPermissionWithChildren(myGroup, GerEventosPermissions.BalcaoVendas.Default, "Permission:BalcaoVendas", new[]
+        {
+            GerEventosPermissions.BalcaoVendas.Create,
+            GerEventosPermissions.BalcaoVendas.Edit,
+            GerEventosPermissions.BalcaoVendas.Desativar,
+            GerEventosPermissions.BalcaoVendas.Ativar
+        });
 
-        // Permissões para BalcaoVendas
-        var balcaoVendasPermission = myGroup.AddPermission(GerEventosPermissions.BalcaoVendas.Default, L("Permission:BalcaoVendas"));
-        balcaoVendasPermission.AddChild(GerEventosPermissions.BalcaoVendas.Create, L("Permission:BalcaoVendas.Create"));
-        balcaoVendasPermission.AddChild(GerEventosPermissions.BalcaoVendas.Edit, L("Permission:BalcaoVendas.Edit"));
-        balcaoVendasPermission.AddChild(GerEventosPermissions.BalcaoVendas.Desativar, L("Permission:BalcaoVendas.Desativar"));
-        balcaoVendasPermission.AddChild(GerEventosPermissions.BalcaoVendas.Ativar, L("Permission:BalcaoVendas.Ativar"));
-
-        // Permissões para Produtor
-        var produtorPermission = myGroup.AddPermission(GerEventosPermissions.Produtor.Default, L("Permission:Produtor"));
-        produtorPermission.AddChild(GerEventosPermissions.Produtor.Create, L("Permission:Produtor.Create"));
-        produtorPermission.AddChild(GerEventosPermissions.Produtor.Edit, L("Permission:Produtor.Edit"));
-        produtorPermission.AddChild(GerEventosPermissions.Produtor.Desativar, L("Permission:Produtor.Desativar"));
-        produtorPermission.AddChild(GerEventosPermissions.Produtor.Ativar, L("Permission:Produtor.Ativar"));
-
+        AddPermissionWithChildren(myGroup, GerEventosPermissions.Produtor.Default, "Permission:Produtor", new[]
+        {
+            GerEventosPermissions.Produtor.Create,
+            GerEventosPermissions.Produtor.Edit,
+            GerEventosPermissions.Produtor.Desativar,
+            GerEventosPermissions.Produtor.Ativar
+        });
 
         // Define suas próprias permissões aqui, se necessário. Exemplo:
         // myGroup.AddPermission(GerEventosPermissions.MyPermission1, L("Permission:MyPermission1"));
+    }
+
+    private static void AddPermissionWithChildren(
+        PermissionGroupDefinition group,
+        string permissionName,
+        string localizedName,
+        string[] childPermissions)
+    {
+        var permission = group.AddPermission(permissionName, L(localizedName));
+        foreach (var child in childPermissions)
+        {
+            permission.AddChild(child, L($"{localizedName}.{child.Split('.').Last()}"));
+        }
     }
 
     private static LocalizableString L(string name)
