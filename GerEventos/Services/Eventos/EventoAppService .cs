@@ -44,7 +44,7 @@ namespace GerEventos.Services.Eventos
         public override async Task<PagedResultDto<EventoDto>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
             var query = _eventoRepository
-                .WithDetails(e => e.BalcaoVendas, e => e.TipoEvento, e => e.Produtor)
+                .WithDetails(e => e.EventoBalcaoVendas, e => e.TipoEvento, e => e.EventoProdutores)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(input.Sorting))
@@ -70,19 +70,22 @@ namespace GerEventos.Services.Eventos
         public async Task<PagedResultDto<EventoDto>> GetListFilterAsync(FilterEventoDto input)
         {
             var query = _eventoRepository
-                .WithDetails(e => e.BalcaoVendas, e => e.TipoEvento, e => e.Produtor)
+                .WithDetails(e => e.EventoBalcaoVendas, e => e.TipoEvento, e => e.EventoProdutores)
                 .AsQueryable();
 
+            // Filtrar por nome do evento
             if (!string.IsNullOrEmpty(input.Nome))
             {
                 query = query.Where(e => e.Nome.Contains(input.Nome));
             }
 
+            // Filtro por Produtor
             if (input.ProdutorId.HasValue)
             {
-                query = query.Where(e => e.ProdutorId == input.ProdutorId.Value);
+                query = query.Where(e => e.EventoProdutores.Any(ep => ep.ProdutorId == input.ProdutorId.Value));
             }
 
+            // Filtro por intervalo de datas
             if (input.DataInicio.HasValue && input.DataFim.HasValue)
             {
                 var dataInicio = input.DataInicio.Value.Date;
@@ -117,8 +120,8 @@ namespace GerEventos.Services.Eventos
                 if (sortField.Equals("nomeProdutor", StringComparison.OrdinalIgnoreCase))
                 {
                     query = sortDirection.ToLower() == "asc"
-                        ? query.OrderBy(e => e.Produtor.Nome)
-                        : query.OrderByDescending(e => e.Produtor.Nome);
+                        ? query.OrderBy(e => e.EventoProdutores.FirstOrDefault().Produtor.Nome)
+                        : query.OrderByDescending(e => e.EventoProdutores.FirstOrDefault().Produtor.Nome);
                 }
                 else if (sortField.Equals("nomeTipoEvento", StringComparison.OrdinalIgnoreCase))
                 {
@@ -134,7 +137,9 @@ namespace GerEventos.Services.Eventos
 
             var totalCount = await query.CountAsync();
 
+         
             var eventos = await query
+                .Distinct()
                 .Skip(input.SkipCount)
                 .Take(input.MaxResultCount)
                 .ToListAsync();
@@ -146,7 +151,5 @@ namespace GerEventos.Services.Eventos
                 eventosDto
             );
         }
-
-
     }
 }
