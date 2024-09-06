@@ -5,7 +5,7 @@ using GerEventos.Services.Dtos.BalcaoVendas;
 using GerEventos.Entities;
 using GerEventos.Services.Dtos.BalcaoVendas;
 
-namespace GerEventos.Services.BalcaoVendas
+namespace GerEventos.Services.BalcaoDeVendas
 {
     public interface IBalcaoVendasAppService :
     ICrudAppService< // Defines CRUD methods
