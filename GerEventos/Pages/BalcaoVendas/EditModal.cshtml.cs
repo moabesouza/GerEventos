@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GerEventos.Services.BalcaoVendas;
+using GerEventos.Services.BalcaoDeVendas;
 using GerEventos.Services.Dtos.BalcaoVendas;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.RazorPages;

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using GerEventos.Services.Dtos.Eventos;
 using GerEventos.Services.Eventos;
 using GerEventos.Services.TipoEventos;
-using GerEventos.Services.BalcaoVendas;
+using GerEventos.Services.BalcaoDeVendas;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Volo.Abp.AspNetCore.Mvc.UI.RazorPages;

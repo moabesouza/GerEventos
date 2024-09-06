@@ -79,86 +79,91 @@
 
 <div class="container mt-4">
 
-    @if (!CurrentUser.IsAuthenticated)
+    @if (CurrentUser.IsAuthenticated)
     {
         <div class="mb-3">
             <a abp-button="Primary" href="~/Account/Login">@L["Login"]</a>
         </div>
-    }
 
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card bg-primary text-light">
-                <div class="card-header">
-                    <h5 class="card-title">
-                        <i class="fas fa-calendar-alt me-2"></i>@L["Quantidade de Eventos"]
-                    </h5>
-                </div>
-                <div class="card-body text-center">
-                    <h3>@Model.EventCount</h3>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card bg-warning text-dark">
-                <div class="card-header">
-                    <h5 class="card-title">
-                        <i class="fas fa-store me-2"></i>@L["Quantidade de Balcões"]
-                    </h5>
-                </div>
-                <div class="card-body text-center">
-                    <h3>@Model.BalcaoCount</h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card bg-success text-light">
-                <div class="card-header">
-                    <h5 class="card-title">
-                        <i class="fas fa-users me-2"></i>@L["Quantidade de Produtores"]
-                    </h5>
-                </div>
-                <div class="card-body text-center">
-                    <h3>@Model.ProdutorCount</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-    @if (Model.EventCount > 0)
-    {
         <div class="row">
-            <div class="col-md-6 mb-4">
-                <div class="card fixed-size-card">
-                    <div class="card-header bg-primary text-light">
+            <div class="col-md-4 mb-4">
+                <div class="card bg-primary text-light">
+                    <div class="card-header">
                         <h5 class="card-title">
-                            <i class="fas fa-calendar-alt me-2"></i>@L["Eventos por Mês"]
+                            <i class="fas fa-calendar-alt me-2"></i>@L["Quantidade de Eventos"]
                         </h5>
                     </div>
-                    <div class="card-body" style="height: 300px;">
-                        <canvas id="eventosPorMesChart" class="chart-canvas" style="max-height: 300px;"></canvas>
+                    <div class="card-body text-center">
+                        <h3>@Model.EventCount</h3>
                     </div>
                 </div>
             </div>
 
-            <!-- Gráfico de Eventos por Tipo -->
-            <div class="col-md-6 mb-4">
-                <div class="card fixed-size-card">
-                    <div class="card-header bg-success text-light">
+            <div class="col-md-4 mb-4">
+                <div class="card bg-warning text-dark">
+                    <div class="card-header">
                         <h5 class="card-title">
-                            <i class="fas fa-tags me-2"></i>@L["Eventos por Tipo"]
+                            <i class="fas fa-store me-2"></i>@L["Quantidade de Balcões"]
                         </h5>
                     </div>
-                    <div class="card-body" style="height: 300px; align-items:center;">
-                        <canvas id="eventosPorTipoChart" class="chart-canvas" style="max-height: 300px;"></canvas>
+                    <div class="card-body text-center">
+                        <h3>@Model.BalcaoCount</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card bg-success text-light">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-users me-2"></i>@L["Quantidade de Produtores"]
+                        </h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <h3>@Model.ProdutorCount</h3>
                     </div>
                 </div>
             </div>
         </div>
+        @if (Model.EventCount > 0)
+        {
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card fixed-size-card">
+                        <div class="card-header bg-primary text-light">
+                            <h5 class="card-title">
+                                <i class="fas fa-calendar-alt me-2"></i>@L["Eventos por Mês"]
+                            </h5>
+                        </div>
+                        <div class="card-body" style="height: 300px;">
+                            <canvas id="eventosPorMesChart" class="chart-canvas" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Eventos por Tipo -->
+                <div class="col-md-6 mb-4">
+                    <div class="card fixed-size-card">
+                        <div class="card-header bg-success text-light">
+                            <h5 class="card-title">
+                                <i class="fas fa-tags me-2"></i>@L["Eventos por Tipo"]
+                            </h5>
+                        </div>
+                        <div class="card-body" style="height: 300px; align-items:center;">
+                            <canvas id="eventosPorTipoChart" class="chart-canvas" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
 
     }
-
+    else
+    {
+        
+    }
 </div>
 
 

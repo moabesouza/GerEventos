@@ -6,7 +6,7 @@ using GerEventos.Services.Eventos;
 using GerEventos.Services.Dtos.Eventos;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.RazorPages;
-using GerEventos.Services.BalcaoVendas;
+using GerEventos.Services.BalcaoDeVendas;
 using GerEventos.Services.TipoEventos;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Volo.Abp.Application.Dtos;
