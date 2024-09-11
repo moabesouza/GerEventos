@@ -13,7 +13,7 @@ namespace GerEventos.Entities
 
         [Required]
         [Display(Name = "Status")]
-        public StatusEnum Status { get; set; }
+        public StatusEnum Status { get; set; } = StatusEnum.Ativado;
 
         public ICollection<Evento> Eventos { get; set; } = new HashSet<Evento>();
     }

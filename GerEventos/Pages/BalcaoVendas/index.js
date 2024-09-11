@@ -11,7 +11,7 @@ $(function () {
             order: [[1, "asc"]],
             searching: false, 
             scrollX: true,
-            ajax: abp.libs.datatables.createAjax(gerEventos.services.balcaoVendas.balcaoVendas.getList),
+            ajax: abp.libs.datatables.createAjax(gerEventos.services.balcaoDeVendas.balcaoVendas.getList),
             columnDefs: [
                 {
                     title: l('Grid:Acoes'),

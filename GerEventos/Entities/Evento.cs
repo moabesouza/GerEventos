@@ -45,7 +45,7 @@ namespace GerEventos.Entities
 
         [Required]
         [Display(Name = "Status")]
-        public StatusEnum Status { get; set; }
+        public StatusEnum Status { get; set; } = StatusEnum.Ativado;
 
         public ICollection<Ingresso> Ingressos { get; set; } = new HashSet<Ingresso>();
         public ICollection<EventoProdutor> EventoProdutores { get; set; } = new HashSet<EventoProdutor>();

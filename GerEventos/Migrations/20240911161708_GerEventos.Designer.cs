@@ -13,8 +13,8 @@ using Volo.Abp.EntityFrameworkCore;
 namespace GerEventos.Migrations
 {
     [DbContext(typeof(GerEventosDbContext))]
-    [Migration("20240825171824_gerEventos")]
-    partial class gerEventos
+    [Migration("20240911161708_GerEventos")]
+    partial class GerEventos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,7 @@ namespace GerEventos.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BalcaoVendas", b =>
+            modelBuilder.Entity("GerEventos.Entities.BalcaoVendas", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -46,6 +46,10 @@ namespace GerEventos.Migrations
                     b.Property<Guid?>("CreatorId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("CreatorId");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ExtraProperties")
                         .IsRequired()
@@ -73,18 +77,22 @@ namespace GerEventos.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("Telefone")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
                     b.HasKey("Id");
 
                     b.ToTable("AppBalcaoVendas", (string)null);
                 });
 
-            modelBuilder.Entity("Evento", b =>
+            modelBuilder.Entity("GerEventos.Entities.Evento", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BalcaoVendasId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Capacidade")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -107,6 +115,11 @@ namespace GerEventos.Migrations
                     b.Property<DateTime>("DataInicio")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("ExtraProperties")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -120,29 +133,168 @@ namespace GerEventos.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierId");
 
+                    b.Property<string>("Localizacao")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<Guid>("ProdutorId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("TipoEventoId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TipoEventoId");
+
+                    b.ToTable("AppEvento", (string)null);
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.EventoBalcaoVendas", b =>
+                {
+                    b.Property<Guid>("EventoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BalcaoVendasId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.HasKey("EventoId", "BalcaoVendasId");
+
+                    b.HasIndex("BalcaoVendasId");
+
+                    b.ToTable("AppEventoBalcaoVendas", (string)null);
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.EventoProdutor", b =>
+                {
+                    b.Property<Guid>("EventoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProdutorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.HasKey("EventoId", "ProdutorId");
+
+                    b.HasIndex("ProdutorId");
+
+                    b.ToTable("AppEventoProdutor", (string)null);
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.Ingresso", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid>("EventoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BalcaoVendasId");
+                    b.HasIndex("EventoId");
 
-                    b.HasIndex("ProdutorId");
-
-                    b.HasIndex("TipoEventoId");
-
-                    b.ToTable("AppEvento", (string)null);
+                    b.ToTable("AppIngresso", (string)null);
                 });
 
             modelBuilder.Entity("GerEventos.Entities.Produtor", b =>
@@ -165,8 +317,15 @@ namespace GerEventos.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("CreatorId");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
                     b.Property<string>("Endereco")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("ExtraProperties")
                         .IsRequired()
@@ -192,6 +351,10 @@ namespace GerEventos.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<string>("Telefone")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
 
@@ -242,6 +405,162 @@ namespace GerEventos.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppTipoEvento", (string)null);
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.UsuarioBalcaoVendas", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BalcaoVendasId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BalcaoVendasId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("AppUsuarioBalcaoVendas", (string)null);
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.Venda", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BalcaoVendasId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<DateTime>("DataVenda")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<Guid>("IngressoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<int>("MeioPagamento")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngressoId");
+
+                    b.ToTable("AppVenda", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IdentityUser<Guid>");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
@@ -2126,31 +2445,94 @@ namespace GerEventos.Migrations
                     b.ToTable("AbpTenantConnectionStrings", (string)null);
                 });
 
-            modelBuilder.Entity("Evento", b =>
+            modelBuilder.Entity("GerEventos.Entities.Evento", b =>
                 {
-                    b.HasOne("BalcaoVendas", "BalcaoVendas")
-                        .WithMany("Eventos")
-                        .HasForeignKey("BalcaoVendasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GerEventos.Entities.Produtor", "Produtor")
-                        .WithMany("Eventos")
-                        .HasForeignKey("ProdutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("GerEventos.Entities.TipoEvento", "TipoEvento")
                         .WithMany("Eventos")
                         .HasForeignKey("TipoEventoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("TipoEvento");
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.EventoBalcaoVendas", b =>
+                {
+                    b.HasOne("GerEventos.Entities.BalcaoVendas", "BalcaoVendas")
+                        .WithMany("EventoBalcaoVendas")
+                        .HasForeignKey("BalcaoVendasId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GerEventos.Entities.Evento", "Evento")
+                        .WithMany("EventoBalcaoVendas")
+                        .HasForeignKey("EventoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("BalcaoVendas");
 
-                    b.Navigation("Produtor");
+                    b.Navigation("Evento");
+                });
 
-                    b.Navigation("TipoEvento");
+            modelBuilder.Entity("GerEventos.Entities.EventoProdutor", b =>
+                {
+                    b.HasOne("GerEventos.Entities.Evento", "Evento")
+                        .WithMany("EventoProdutores")
+                        .HasForeignKey("EventoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GerEventos.Entities.Produtor", "Produtor")
+                        .WithMany("EventoProdutores")
+                        .HasForeignKey("ProdutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Evento");
+
+                    b.Navigation("Produtor");
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.Ingresso", b =>
+                {
+                    b.HasOne("GerEventos.Entities.Evento", "Evento")
+                        .WithMany("Ingressos")
+                        .HasForeignKey("EventoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Evento");
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.UsuarioBalcaoVendas", b =>
+                {
+                    b.HasOne("GerEventos.Entities.BalcaoVendas", "BalcaoVendas")
+                        .WithMany()
+                        .HasForeignKey("BalcaoVendasId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("BalcaoVendas");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.Venda", b =>
+                {
+                    b.HasOne("GerEventos.Entities.Ingresso", "Ingresso")
+                        .WithMany("Vendas")
+                        .HasForeignKey("IngressoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingresso");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
@@ -2304,14 +2686,28 @@ namespace GerEventos.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BalcaoVendas", b =>
+            modelBuilder.Entity("GerEventos.Entities.BalcaoVendas", b =>
                 {
-                    b.Navigation("Eventos");
+                    b.Navigation("EventoBalcaoVendas");
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.Evento", b =>
+                {
+                    b.Navigation("EventoBalcaoVendas");
+
+                    b.Navigation("EventoProdutores");
+
+                    b.Navigation("Ingressos");
+                });
+
+            modelBuilder.Entity("GerEventos.Entities.Ingresso", b =>
+                {
+                    b.Navigation("Vendas");
                 });
 
             modelBuilder.Entity("GerEventos.Entities.Produtor", b =>
                 {
-                    b.Navigation("Eventos");
+                    b.Navigation("EventoProdutores");
                 });
 
             modelBuilder.Entity("GerEventos.Entities.TipoEvento", b =>
